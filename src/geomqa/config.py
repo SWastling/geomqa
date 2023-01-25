@@ -1,6 +1,5 @@
-MRTRIX_VERSIONS = [
-    "3.0.1-26-g0f28beae",
-]
+MRTRIX_VERSIONS = ["3.0.4-10-gf633dfd7"]
+
 NIFTYREG_VERSIONS = ["1.5.59"]
 
 DEFAULT_NIFTYREG = "/store/apps/niftyreg/bin"

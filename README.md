@@ -61,7 +61,7 @@ coronal and axial slice of the MR image.
 
 
 ## Software Requirements
-- [MRtrix3](https://www.mrtrix.org/) (version 3.0.1)
+- [MRtrix3](https://www.mrtrix.org/) (version 3.0.4)
 - [niftyreg](https://github.com/KCL-BMEIS/niftyreg) (version 1.5.59)
 
 The versions of `MRtrix` and  `niftyreg` are verified at runtime.
