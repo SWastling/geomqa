@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [release-1.1.1](https://github.com/SWastling/geomqa/tree/release-1.1.1) - 2023-01-26
+
+- Added user options to control reg_f3d more finely
+
 ## [release-1.1.0](https://github.com/SWastling/geomqa/tree/release-1.1.0) - 2023-01-26
 
 - Updated to enable completion of partial analysis i.e skips steps if output exist
