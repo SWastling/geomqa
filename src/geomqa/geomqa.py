@@ -215,6 +215,46 @@ def main():
     )
 
     parser.add_argument(
+        "-sx",
+        default=15,
+        help="reg_3d spline option - final grid spacing along the x axis in "
+        "mm (in voxel if negative value) (default: %(default)s)",
+        type=float,
+    )
+
+    parser.add_argument(
+        "-be",
+        default=0.005,
+        help="reg_3d regularisation option - weight of the bending energy "
+        "(second derivative of the transformation) penalty term (default: %(default)s)",
+        type=float,
+    )
+
+    parser.add_argument(
+        "-maxit",
+        default=500,
+        help="reg_3d optimisation option - maximal number of iterations at the "
+        "final level (default: %(default)s)",
+        type=int,
+    )
+
+    parser.add_argument(
+        "-ln",
+        default=4,
+        help="reg_3d optimisation option - number of level to perform "
+        "(default: %(default)s)",
+        type=int,
+    )
+
+    parser.add_argument(
+        "-lp",
+        default=2,
+        help="reg_3d optimisation option - only perform the first levels "
+        "(default: %(default)s)",
+        type=int,
+    )
+
+    parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {__version__}",
@@ -232,6 +272,12 @@ def main():
         sys.argv.append("-h")
 
     args = parser.parse_args()
+
+    be_opt = args.be
+    maxit_opt = args.maxit
+    ln_opt = args.ln
+    lp_opt = args.lp
+    sx_opt = args.sx
 
     print("* checking versions of external software")
     vercheck.check_lib_ver(
@@ -311,15 +357,15 @@ def main():
             "-cpp",
             cpp_fp,
             "-be",
-            "0.005",
+            str(be_opt),
             "-maxit",
-            "500",
+            str(maxit_opt),
             "-sx",
-            "15",
+            str(sx_opt),
             "-ln",
-            "4",
+            str(ln_opt),
             "-lp",
-            "2",
+            str(lp_opt),
         ]
 
         mrview_cmd = [
