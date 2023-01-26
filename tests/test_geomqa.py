@@ -66,6 +66,42 @@ def test_prints_help_for_invalid_option(script_runner):
     assert result.stderr.startswith(SCRIPT_USAGE)
 
 
+def test_geomqa_files_exist(tmp_path, script_runner):
+
+    data_dir = TEST_DATA_DIR / "qa_example"
+    input_dir = data_dir / "input"
+    qa_nii = input_dir / "mri.nii.gz"
+
+    results_dir = tmp_path / "mri"
+    ct_fp = results_dir / "ct.nii.gz"
+    rigid_aff_fp = results_dir / "mr2ct_rigid.aff"
+    rigid_fp = results_dir / "mr2ct_rigid.nii.gz"
+    nonrigid_fp = results_dir / "mr2ct_nonrigid.nii.gz"
+    cpp_fp = results_dir / "mr2ct_cpp.nii.gz"
+    disp_field_fp = results_dir / "displ_field_ct.nii.gz"
+    mag_displ_field_ct_fp = results_dir / "mag_displ_field_ct.nii.gz"
+    mr2ct_deformation_fp = results_dir / "mr2ct_deformation.nii.gz"
+    ct2mr_deformation_fp = results_dir / "ct2mr_deformation.nii.gz"
+    mag_displ_field_mri_fp = results_dir / "mag_displ_field_mri.nii.gz"
+    fig_fp = tmp_path / "mri_distortion_results.pdf"
+
+    results_dir.mkdir(parents=True, exist_ok=True)
+    ct_fp.touch()
+    rigid_aff_fp.touch()
+    rigid_fp.touch()
+    nonrigid_fp.touch()
+    cpp_fp.touch()
+    disp_field_fp.touch()
+    mag_displ_field_ct_fp.touch()
+    mr2ct_deformation_fp.touch()
+    ct2mr_deformation_fp.touch()
+    mag_displ_field_mri_fp.touch()
+    fig_fp.touch()
+
+    result = script_runner.run(SCRIPT_NAME, str(qa_nii), str(tmp_path))
+    assert result.success
+
+
 def test_geomqa(tmp_path, script_runner):
 
     pthresh = 1.0

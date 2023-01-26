@@ -267,7 +267,8 @@ def main():
 
         # create symlink to CT in results directory for visual check of registration
         ct_lnk_fp = results_dp / "ct.nii.gz"
-        ct_lnk_fp.symlink_to(ct_fp)
+        if not ct_lnk_fp.is_file():
+            ct_lnk_fp.symlink_to(ct_fp)
 
         # filepaths
         rigid_fp = results_dp / "mr2ct_rigid.nii.gz"
@@ -400,32 +401,40 @@ def main():
         # run commands
         print("** registering MRI to CT")
         print("*** rigid registration with reg_aladin")
-        sp.run(rigid_cmd, check=True)
+        if not rigid_fp.is_file():
+            sp.run(rigid_cmd, check=True)
 
         print("*** non-rigid registration with reg_f3d")
-        sp.run(nonrigid_cmd, check=True)
+        if not nonrigid_fp.is_file():
+            sp.run(nonrigid_cmd, check=True)
 
-        print("*** displaying registered images with FSLeyes")
-        sp.Popen(mrview_cmd, stderr=sp.PIPE, stdout=sp.PIPE)
+            print("*** displaying registered images with mrview")
+            sp.Popen(mrview_cmd, stderr=sp.PIPE, stdout=sp.PIPE)
 
         print("** calculating displacement field in CT-space with reg_transform")
-        sp.run(disp_cmd, check=True)
+        if not disp_field_fp.is_file():
+            sp.run(disp_cmd, check=True)
 
         print("** calculating root mean square of displacement field in CT-space")
-        sp.run(mag_displ_field_cmd, check=True)
+        if not mag_displ_field_ct_fp.is_file():
+            sp.run(mag_displ_field_cmd, check=True)
 
         print("** transforming results into MRI space")
         print("*** composing mr2ct_rigid.aff and mr2ct_cpp.nii.gz with reg_transform")
-        sp.run(compose_cmd, check=True)
+        if not mr2ct_deformation_fp.is_file():
+            sp.run(compose_cmd, check=True)
 
         print("*** inverting composed transformation with reg_transform")
-        sp.run(invert_cmd, check=True)
+        if not ct2mr_deformation_fp.is_file():
+            sp.run(invert_cmd, check=True)
 
         print("*** resampling into MRI space with reg_resample")
-        sp.run(resample_cmd, check=True)
+        if not mag_displ_field_mri_fp.is_file():
+            sp.run(resample_cmd, check=True)
 
         print("** plotting results")
-        contour(mri_fp, mag_displ_field_mri_fp, fig_fp)
+        if not fig_fp.is_file():
+            contour(mri_fp, mag_displ_field_mri_fp, fig_fp)
 
 
 if __name__ == "__main__":  # pragma: no cover
